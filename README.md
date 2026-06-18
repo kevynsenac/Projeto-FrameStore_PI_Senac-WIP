@@ -30,7 +30,7 @@ Para testar ou desenvolver na FrameStore, siga os passos abaixo:
    ```bash
    npm install
    ```
-````
+
 
 3. **Configuração do Ambiente:** - Crie um arquivo `.env` na raiz do projeto.
 
