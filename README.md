@@ -6,92 +6,103 @@ Este documento serve como o guia oficial de planejamento para o desenvolvimento 
 
 ---
 
-## 🏗️ 1. Arquitetura e Tecnologias (A Implementar)
+## 🏗️ 1. Arquitetura e Tecnologias
 
-- **Frontend:** HTML, CSS, JavaScript (Já iniciado).
+- **Frontend:** HTML, CSS, JavaScript.
 - **Backend:** Node.js (com Express).
-- **Banco de Dados:** SQL (MySQL ou PostgreSQL) para garantir relacionamento consistente entre usuários, jogos e transações.
+- **Banco de Dados:** SQL (MySQL/PostgreSQL) para garantir relacionamento consistente.
+- **Configuração:** Todas as variáveis sensíveis (dados de conexão com DB, segredos de autenticação, portas) serão gerenciadas via arquivo `.env`, garantindo segurança e separação de ambientes.
 
 ---
 
-## 🗄️ 2. Modelagem do Banco de Dados (Estrutura Sugerida)
+## 🗄️ 2. Modelagem do Banco de Dados
 
-Para aplicar boas práticas de SQL e evitar colunas com múltiplos dados (arrays), a estrutura será dividida em Tabelas Principais e Tabelas Relacionais.
+Para evitar dependências externas de armazenamento, as imagens serão armazenadas diretamente no banco de dados.
 
 ### Tabelas Principais
 
-- **`USUARIOS` (Antiga PERFIL):**
-  - `id`: (PK) Identificador único.
-  - `nome`: Nome para display no perfil e homepage.
-  - `email`: Credencial de login.
-  - `senha`: Credencial de login (idealmente criptografada).
-  - `saldo`: (Decimal) Dinheiro virtual para simular compras. Inserido manualmente via DB.
-  - `pontos`: (Inteiro) Moeda secundária para trocar por cupons.
+- **`USUARIOS`:**
+- `id`: (PK) Identificador único.
+- `nome`: Nome para display no perfil.
+- `email`: Credencial de login.
+- `senha`: Hash da senha (criptografada).
+- `saldo`: (Decimal) Dinheiro virtual.
+- `pontos`: (Inteiro) Moeda secundária.
+- `adm`: (Boolean) Define privilégios de acesso ao Painel Administrativo.
 
 - **`JOGOS`:**
-  - `id`: (PK) Identificador único.
-  - `titulo`: Nome do jogo.
-  - `preco`: (Decimal) Preço cheio do jogo.
-  - `desconto`: (Decimal/Null) Porcentagem de desconto (Ex: 0.10 para 10%). Se nulo, sem desconto.
-  - `platform`: Steam, PlayStation, Xbox, Mobile, etc.
-  - `capa`: Caminho/URL da imagem principal.
-  - `gallery`: Caminho/URLs das imagens da galeria (Pode ser uma tabela separada `JOGOS_IMAGENS` se houver muitas).
+- `id`: (PK) Identificador único.
+- `titulo`: Nome do jogo.
+- `preco`: (Decimal) Preço cheio.
+- `desconto`: (Decimal/Null) Porcentagem de desconto.
+- `platform`: Steam, PlayStation, Xbox, etc.
+- `capa`: (LONGBLOB) Imagem principal convertida em binário.
+- `gallery1`: (LONGBLOB) Imagem da galeria 1.
+- `gallery2`: (LONGBLOB) Imagem da galeria 2.
+- `gallery3`: (LONGBLOB) Imagem da galeria 3.
 
 - **`CUPONS`:**
-  - `id`: (PK) Identificador único.
-  - `nome`: Código ou nome do cupom (Ex: "10OFF").
-  - `tipo`: Tipo de benefício (Por enquanto, apenas desconto).
-  - `desconto`: (Decimal) Valor ou porcentagem abatida na compra.
-  - `custo_pontos`: (Inteiro) Quantidade de pontos necessários para resgatar.
+- `id`: (PK) Identificador único.
+- `nome`: Código do cupom.
+- `tipo`: Tipo de benefício.
+- `desconto`: (Decimal) Valor abatido.
+- `custo_pontos`: (Inteiro) Custo em pontos.
 
-### Tabelas Relacionais (Associações)
+### Tabelas Relacionais
 
-- **`CARRINHO`:** (`id_usuario`, `id_jogo`) -> Representa os itens no carrinho antes da compra.
-- **`BIBLIOTECA`:** (`id_usuario`, `id_jogo`, `data_compra`) -> Representa os jogos adquiridos com sucesso.
-- **`USUARIO_CUPONS`:** (`id_usuario`, `id_cupom`, `usado`) -> Representa os cupons que o usuário resgatou com pontos e se já foram utilizados.
+- **`CARRINHO`:** (`id_usuario`, `id_jogo`)
+- **`BIBLIOTECA`:** (`id_usuario`, `id_jogo`, `data_compra`)
+- **`USUARIO_CUPONS`:** (`id_usuario`, `id_cupom`, `usado`)
 
 ---
 
-## ⚙️ 3. Lógica de Negócio e Funcionalidades (Simulação)
-
-Abaixo estão os fluxos de lógica que o backend em Node.js precisará resolver:
+## ⚙️ 3. Lógica de Negócio e Funcionalidades
 
 ### A. Autenticação e Perfil
 
-1. O usuário fará login usando `email` e `senha` do DB.
-2. Ao acessar a `homepage` ou `perfil.html`, o sistema puxa do DB o `nome`, `saldo` e `pontos`.
-3. A aba "Biblioteca" fará um SELECT na tabela `BIBLIOTECA` para renderizar os jogos comprados.
+1. Login via `email` e `senha`. O sistema valida as credenciais contra os dados protegidos via `.env`.
+2. No `perfil.html`, se a coluna `adm` do usuário for `true`, o frontend renderiza o botão "Painel Administrativo".
+3. A aba "Biblioteca" renderiza os jogos adquiridos.
 
-### B. Sistema de Compras (A grande simulação)
+### B. Sistema de Compras
 
-1. O usuário adiciona itens na tabela `CARRINHO`.
-2. Ao clicar em **Finalizar Compra**:
-   - O sistema soma o preço dos itens (aplicando descontos de jogos em promoção ou cupons ativos).
-   - O sistema verifica na tabela `USUARIOS` se o `saldo` é maior ou igual ao total.
-   - **Se houver saldo:** - Subtrai o valor do `saldo` do usuário.
-     - Insere os jogos na tabela `BIBLIOTECA`.
-     - Remove os jogos da tabela `CARRINHO`.
-     - Adiciona `pontos` de recompensa ao usuário pela compra.
-   - **Se não houver saldo:** Exibe mensagem de erro (Lembrando: para testar, o saldo deverá ser aumentado manualmente com um script SQL no DB).
+1. Adição de itens na tabela `CARRINHO`.
+2. **Checkout:** Validação de saldo (via `USUARIOS`), atualização de saldo, inserção em `BIBLIOTECA`, remoção de `CARRINHO` e incremento de `pontos`.
 
 ### C. Sistema de Pontos e Cupons
 
-1. O usuário acessa a página de pontos.
-2. O sistema verifica os `pontos` totais do usuário e a tabela `CUPONS` disponíveis.
-3. Ao resgatar um cupom:
-   - Verifica se tem pontos suficientes.
-   - Subtrai os pontos do usuário.
-   - Associa o cupom na tabela `USUARIO_CUPONS` marcando como `usado = false`.
-4. Na tela de checkout, o usuário pode aplicar o cupom para reduzir o preço final.
+1. Resgate de cupons verifica `pontos` totais.
+2. Aplicação de cupom reduz o preço total no momento do checkout.
+
+### D. Painel Administrativo (Área Restrita)
+
+1. **Segurança:** As rotas administrativas serão protegidas por um middleware no Express, que verifica no banco de dados se o usuário logado possui a flag `adm = true` antes de processar qualquer requisição.
+2. **Gestão de Jogos:**
+
+- Adicionar novos jogos (incluindo upload das imagens direto como `LONGBLOB`).
+- Editar informações (título, preço, imagens) de jogos existentes.
+- Deletar jogos.
+
+3. **Gestão de Usuários:**
+
+- Listagem de usuários.
+- Edição direta de `saldo` e `pontos` de qualquer usuário (ideal para correções ou testes).
+
+3. **Gestão de Cupons:**
+
+- Adicionar novos cupons para a aba de pontos (quanto de desconto aplica e seu custo de pontos)
+- Editar cupons existentes
+- Deletar cupons
 
 ---
 
 ## 🚀 4. Etapas de Execução (Roadmap)
 
-- [ ] **Passo 1:** Configurar o servidor Node.js (Express, Cors, Dotenv).
-- [ ] **Passo 2:** Criar o script SQL de criação das tabelas e injeção de dados falsos (Jogos iniciais, 1 usuário com saldo alto para testes).
-- [ ] **Passo 3:** Criar as rotas da API REST (GET /jogos, POST /login, GET /perfil).
-- [ ] **Passo 4:** Conectar o Frontend atual na API. Trocar os dados estáticos (jsons no JS) por chamadas `fetch()`.
-- [ ] **Passo 5:** Implementar a lógica de Carrinho e Checkout (simulação de subtração de saldo).
-- [ ] **Passo 6:** Implementar a página de resgate e aplicação de Cupons/Pontos.
-- [ ] **Passo 7:** Refinamento final da interface (Feedback visual de "Compra aprovada", "Saldo insuficiente").
+- [ ] **Passo 1:** Configurar servidor Node.js e conectar ao banco (dados sensíveis no `.env`).
+- [ ] **Passo 2:** Criar script SQL (Tabelas com suporte a `LONGBLOB` para imagens).
+- [ ] **Passo 3:** Desenvolver rotas de API REST.
+- [ ] **Passo 4:** Conectar Frontend à API (substituir dados estáticos por `fetch()`).
+- [ ] **Passo 5:** Implementar lógica de Carrinho e Checkout.
+- [ ] **Passo 6:** Implementar lógica de Pontos e Cupons.
+- [ ] **Passo 7:** Desenvolver Painel Administrativo com middleware de segurança e formulários de edição (Jogos e Usuários).
+- [ ] **Passo 8:** Refinamento de UI/UX (Feedback visual de transações e acesso restrito).
