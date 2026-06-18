@@ -1,0 +1,259 @@
+/* Garante que o fundo azul escuro ocupe a tela inteira */
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #050533; /* Mesma cor da tela de login */
+    font-family: 'Inter', sans-serif;
+    color: white;
+    min-height: 100vh;
+}
+
+.navbar {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 15px 40px;
+    background-color: #050533;
+    position: fixed; /* Fixa no topo como as outras telas */
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+.logo-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    gap: 15px;
+}
+
+.logo-unico { 
+    height: 50px;
+    border-radius: 20px;
+}
+
+.logo-unico:hover {
+    transform: scale(1.05); /* Efeito de zoom suave */
+    transition: transform 0.3s;
+}
+
+.logo-nome { 
+    height: 25px; 
+    border-radius: 20px;
+}
+
+.logo-nome:hover {
+    transform: scale(1.05); /* Efeito de zoom suave */
+    transition: transform 0.3s;
+}
+
+
+.main-container {
+    display: flex;
+    margin-top: 80px; /* Abre espaço para a Navbar não cobrir o conteúdo */
+    min-height: calc(100vh - 80px);
+}
+
+/* Sidebar - Estrutura */
+.sidebar-menu {
+    width: 260px;
+    background-color: #050533;
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-menu.closed { width: 80px; }
+
+/* O SEGREDO: Sumir com ícones E textos dentro da lista quando fechar */
+.sidebar-menu.closed ul {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+}
+
+/* Estilo da lista (mantém a animação suave) */
+.sidebar-menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.4s ease;
+}
+
+.sidebar-menu li a {
+    display: flex;
+    align-items: center;
+    height: 50px;
+    text-decoration: none;
+    color: white;
+    padding: 0 22px;
+    white-space: nowrap; /* Impede o texto de "quebrar" para baixo */
+}
+
+.sidebar-menu i {
+    min-width: 25px;
+    font-size: 18px;
+    text-align: center;
+    margin-right: 20px;
+}
+
+/* Ajuste do botão Bars (Ele deve continuar visível) */
+.toggle-container {
+    padding: 0 22px;
+    margin-bottom: 30px;
+}
+
+.menu-toggle {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+/* Área de Conteúdo Principal (Onde fica o azul mais claro) */
+.profile-content {
+    flex: 1; /* Ocupa o restante da largura */
+    background: linear-gradient(180deg, #0b0b55 0%, #050533 100%); /* Efeito gradiente da Nuuvem */
+    padding: 50px;
+    border-top-left-radius: 30px; /* Curva suave no encontro com o menu */
+}
+
+/* Cabeçalho do Usuário */
+.profile-header {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    margin-bottom: 40px;
+}
+
+.user-info-section {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.profile-avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background-color: #ccc;
+    object-fit: cover;
+    min-width: 120px;
+    min-height: 120px;
+}
+
+/* Estilização das Abas (Meus Games, etc) */
+.profile-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 40px;
+}
+
+.tab-profile {
+    padding: 10px 25px;
+    border-radius: 50px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.tab-profile.active {
+    background-color: white;
+    color: #000;
+}
+
+.tab-profile.inactive {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+/* Grid de Jogos (Capa Jogo) */
+.games-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Responsivo */
+    gap: 20px;
+}
+
+.game-item {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    aspect-ratio: 2/3; /* Formato de capa de jogo */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.game-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+
+/* Estilo Base dos Botões de Conexão */
+.connection-buttons {
+    display: flex;
+    gap: 12px;
+    margin-top: 15px;
+    flex-wrap: wrap;
+}
+
+/* Padronização Geral dos Botões */
+.btn-connection {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px 20px;
+    border-radius: 8px; /* Cantos seguindo o padrão da imagem */
+    border: none;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    min-width: 130px; /* Garante que todos tenham um tamanho similar */
+    transition: all 0.2s ease;
+}
+
+/* Estilo Específico: Google */
+.btn-google {
+    background-color: #ffffff;
+    color: #333333;
+}
+
+.btn-google img {
+    width: 18px; /* Tamanho do logo do Google */
+    height: 18px;
+}
+
+/* Estilo Específico: Steam */
+.btn-steam {
+    background-color: #175d8a; /* Azul oficial Steam */
+    color: #ffffff;
+}
+
+.btn-steam i {
+    font-size: 18px;
+}
+
+/* Estilo Específico: Discord */
+.btn-discord {
+    background-color: #5865f2; /* Roxo oficial Discord */
+    color: #ffffff;
+}
+
+.btn-discord i {
+    font-size: 18px;
+}
+
+/* Efeito de Hover para todos */
+.btn-connection:hover {
+    filter: brightness(0.9);
+    transform: scale(1.02);
+}

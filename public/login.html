@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FrameStore | Sign Up/In</title>
+    <link rel="stylesheet" href="css/login.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+<header class="navbar">
+    <div class="logo-container">
+        <a href="index.html" class="logo-link">
+            <img src="media/home/site_logo.png" alt="Logo Unico" class="logo-unico">
+            <img src="media/home/site_nome.png" alt="Logo Nome" class="logo-nome">
+        </a>
+    </div>
+</header>
+
+<main class="login-wrapper">
+    <div class="login-container">
+        
+        <div class="tabs">
+            <button id="btn-login" class="tab-btn active" onclick="showTab('login')">Entrar</button>
+            <button id="btn-register" class="tab-btn inactive" onclick="showTab('register')">Criar minha conta</button>
+        </div>
+
+        <div id="form-login">
+            <h1>Que bom te ver de novo!</h1>
+            <p>Você usou <span class="bold">e-mail e senha</span> no último login</p>
+            
+            <form action="perfil.html"> 
+                <div class="input-group">
+                    <i class="fa-solid fa-user"></i>
+                    <input type="email" placeholder="* Email" required>
+                </div>
+                
+                <div class="input-group">
+                    <i class="fa-solid fa-key"></i>
+                    <input type="password" id="login-password" placeholder="* Senha" required>
+                    <i class="fa-regular fa-eye eye-icon" id="login-eye" onclick="togglePassword('login-password', 'login-eye')"></i>
+                </div>
+                
+                <div class="form-footer">
+                    <div class="checkbox-area">
+                        <input type="checkbox" id="remember">
+                        <label for="remember">Lembrar</label>
+                    </div>
+                    <a href="#" class="forgot-link">Esqueci minha senha</a>
+                </div>
+                
+                <button type="submit" class="btn-access">Acessar</button>
+            </form>
+        </div>
+
+        <div id="form-register" class="hidden">
+            <h1>Crie sua conta</h1>
+            <p>Rápido, fácil e seguro.</p>
+            <form>
+                <div class="input-group">
+                    <i class="fa-solid fa-envelope"></i> 
+                    <input type="email" placeholder="* Email" required>
+                </div>
+                <div class="input-group">
+                    <i class="fa-solid fa-key"></i>
+                    <input type="password" id="register-password" placeholder="* Senha" required>
+                    <i class="fa-regular fa-eye eye-icon" id="register-eye" onclick="togglePassword('register-password', 'register-eye')"></i>
+                </div>
+                <div class="password-tips">
+                    <h3>Siga essas dicas:</h3>
+                    <ul>
+                        <li>Mínimo 6 caracteres</li>
+                        <li>Use letras e números</li>
+                    </ul>
+                </div>
+                <button type="submit" class="btn-access">Criar</button>
+            </form>
+        </div>
+
+    </div> 
+</main>
+
+<script src="js/login.js"></script>
+</body>
+</html>

@@ -1,0 +1,214 @@
+/* Reset e Estrutura Global */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /* Garante que padding não aumente o tamanho real do elemento */
+    -webkit-tap-highlight-color: transparent; /* Remove o flash azul ao tocar em botões no celular */
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #050533; /* Azul escuro de fundo */
+    display: flex; /* Ativa flexbox para centralizar o conteúdo */
+    justify-content: center; /* Centraliza horizontalmente */
+    align-items: center; /* Centraliza verticalmente */
+    height: 100vh; /* Ocupa toda a altura da tela */
+}
+
+/* 1. O Wrapper agora alinha tudo no centro da tela verticalmente */
+.login-wrapper {
+    display: flex;
+    flex-direction: column; 
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #050533;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* 2. A "caixa" que engloba os botões e o formulário */
+.login-container {
+    background-color: #0a0a3d; /* Azul da caixa */
+    padding: 40px;
+    border-radius: 20px;
+    width: 100%;
+    max-width: 450px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Garante que tudo dentro da caixa fique no centro */
+}
+
+/* 3. A barra de botões (Entrar / Criar conta) */
+.tabs {
+    display: flex;
+    width: 100%; /* Ocupa a largura interna da caixa */
+    background-color: #050525;
+    border-radius: 50px;
+    padding: 5px;
+    margin-bottom: 30px; /* Espaço para o título "Que bom te ver" */
+}
+
+/* 4. Estilo dos botões individuais */
+.tab-btn {
+    flex: 1; /* Faz os dois botões terem o mesmo tamanho exato */
+    border: none;
+    padding: 12px 0;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: bold;
+    font-family: 'Inter', sans-serif;
+    transition: 0.3s;
+}
+
+.tab-btn.active {
+    background-color: white;
+    color: black;
+}
+
+.tab-btn.inactive {
+    background-color: transparent;
+    color: #ffffff66; /* Branco meio transparente para o texto inativo */
+}
+
+/* Ajuste do Título e texto */
+.login-container h1 {
+    color: white;
+    margin-bottom: 10px;
+    font-size: 24px;
+}
+
+.login-container p {
+    color: white;
+    margin-bottom: 25px;
+    font-size: 14px;
+}
+
+/* Estilização de Textos */
+h1 { color: #ffffff; font-size: 26px; margin-bottom: 12px; user-select: none; }
+p { color: #ffffff; font-size: 15px; margin-bottom: 25px; opacity: 0.9; user-select: none; }
+.bold { font-weight: 700; }
+
+/* Grupos de Entrada (Inputs) */
+.input-group {
+    position: relative;
+    margin-bottom: 15px;
+}
+
+.input-group i {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%); /* Centraliza o ícone verticalmente */
+    color: #8c96a3;
+    pointer-events: none; /* O ícone não "atrapalha" o clique no input */
+}
+
+.input-group .eye-icon {
+    left: auto;
+    right: 16px; /* Posiciona o olho na direita */
+    cursor: pointer;
+    pointer-events: auto; /* Reativa o clique apenas para o ícone do olho */
+}
+
+/* ESTA É A PARTE QUE CORRIGE A FORMATAÇÃO AO MOSTRAR SENHA */
+input[type="email"], 
+input[type="password"], 
+input[type="text"] {  /* O tipo "text" deve ter o mesmo estilo do "password" */
+    width: 100%;
+    padding: 16px 16px 16px 48px; /* Espaço na esquerda para o ícone */
+    border-radius: 12px;
+    border: none;
+    background-color: #f0f2f5 !important; /* Mantém o fundo cinza sempre */
+    font-size: 16px;
+    outline: none; /* Remove a borda azul padrão de foco */
+    display: block;
+}
+
+/* Rodapé e Botões */
+.form-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #ffffff;
+    margin: 20px 0 30px 0;
+    font-size: 14px;
+}
+
+.checkbox-area { display: flex; align-items: center; }
+input[type="checkbox"] { width: 18px; height: 18px; margin-right: 8px; cursor: pointer; }
+
+.forgot-link { color: #ffffff; text-decoration: underline; cursor: pointer; }
+
+.btn-access {
+    width: 100%;
+    padding: 16px;
+    background-color: #2a2aef;
+    color: #ffffff;
+    border: none;
+    border-radius: 12px;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.btn-access:hover {
+    filter: brightness(1.1);
+    transform: scale(1.02);
+    transition: 0.3s;
+}
+
+/* Dicas e Ofertas */
+.password-tips { text-align: left; color: #ffffff; margin: 20px 0; }
+.password-tips li { font-size: 14px; margin-bottom: 12px; padding-left: 18px; position: relative; list-style: none; }
+.password-tips li::before { content: "•"; position: absolute; left: 0; color: #ffffff; }
+
+.offers-area { display: flex; align-items: center; color: #ffffff; font-size: 14px; margin-bottom: 25px; }
+
+.hidden { display: none; } /* Classe para esconder o form de cadastro/login */
+
+/* Remove ícone nativo do Edge */
+input::-ms-reveal, input::-ms-clear { display: none !important; }
+
+/* Barra Superior */
+.navbar {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 15px 40px; /* Espaçamento interno */
+    background-color: #050533;
+    position: fixed; /* Fixa no topo */
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+.logo-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    gap: 15px; /* Espaço entre o escudo e o nome */
+}
+
+/* Tamanho realístico para as logos */
+.logo-unico {
+    height: 60px; /* Aumentei um pouco para aparecer bem */
+    width: auto;
+    border-radius: 20px;
+}
+
+.logo-nome {
+    height: 30px;
+    width: auto;
+    border-radius: 20px; 
+}
+
+/* Centraliza o formulário na tela */
+.login-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* Ocupa a altura toda da tela */
+    padding-top: 80px; /* Abre espaço para a navbar fixa não cobrir o form */
+}
