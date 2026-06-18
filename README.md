@@ -1,4 +1,3 @@
-````markdown
 # 🎮 Projeto FrameStore
 
 Este documento detalha o funcionamento, a arquitetura e o planejamento do projeto **FrameStore**, uma loja virtual de jogos digitais.
@@ -147,7 +146,3 @@ Para evitar dependências externas de armazenamento, as imagens são armazenadas
 ---
 
 > **Desenvolvido para fins didáticos e apresentativos de conclusão de curso.**
-
-```
-
-```
