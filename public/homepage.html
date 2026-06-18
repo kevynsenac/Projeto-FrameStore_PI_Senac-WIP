@@ -19,8 +19,8 @@
             </div>
             
             <a href="homepage.html" class="logo-link">
-                <img src="media/home/site_logo.png" alt="Logo Unico" class="logo-unico">
-                <img src="media/home/site_nome.png" alt="Logo" class="logo-nome">
+                <img src="/src/templates/assets/cover/site_logo.png" alt="Logo Unico" class="logo-unico">
+                <img src="/src/templates/assets/cover/site_nome.png" alt="Logo Nome" class="logo-nome">
             </a>
         </div>
         
@@ -57,17 +57,7 @@
     <div id="overlay" class="overlay" onclick="toggleMenu()"></div>
 
     <section class="main-banner">
-        <div class="banner-slider">
-            <div class="slide active">
-                <img src="media/home/resident_evil_requiem.jpg" alt="Resident Evil Requiem">
-            </div>
-            <div class="slide">
-                <img src="media/home/resident_evil_4.jpg" alt="Resident Evil 4">
-            </div>
-            <div class="slide">
-                <img src="media/home/resident_evil_village.jpg" alt="Resident Evil Village">
-            </div>
-
+        <div class="banner-slider" id="banner-slider">
             <button class="prev" onclick="changeSlide(-1)">&#10094;</button>
             <button class="next" onclick="changeSlide(1)">&#10095;</button>
         </div>
@@ -76,6 +66,5 @@
     <div class="games-grid" id="games-container"></div>
 
     <script src="js/homepage.js"></script>
-    <script src="js/jogo.js"></script>
 </body>
 </html>

@@ -1,97 +1,11 @@
-const games = [
-    {
-        title: "Forza Horizon 6",
-        price: "R$ 299,00",
-        image: "media/home/forza_horizon_6.jpg",
-        platform: "Steam",
-        system: "Windows",
-        gallery: ["media/others/forza_horizon_6_1.png", "media/others/forza_horizon_6_2.png", "media/others/forza_horizon_6_3.png"]
-    },
-    {
-        title: "Assassin's Creed Black Flag",
-        price: "R$ 119,99",
-        image: "media/home/assassins_creed_black_flag.jpg",
-        platform: "Steam",
-        system: "Windows",
-        gallery: ["media/others/assassins_creed_1.png", "media/others/assassins_creed_2.png", "media/others/assassins_creed_3.png"]
-    },
-    {
-        title: "ARC Raiders",
-        price: "R$ 171,80",
-        image: "media/home/arc_raiders.jpg",
-        platform: "Steam",
-        system: "Windows",
-        gallery: ["media/others/arc_raiders_1.png", "media/others/arc_raiders_2.png", "media/others/arc_raiders_3.png"]
-    },
-    {
-        title: "FC 26",
-        price: "R$ 299,00",
-        image: "media/home/ea_fc_26.jpg",
-        platform: "Steam",
-        system: "Windows",
-        gallery: ["media/others/ea_fc_26_1.png", "media/others/ea_fc_26_2.png", "media/others/ea_fc_26_3.png"]
-    },
-    {
-        title: "Need For Speed Heat",
-        price: "R$ 26,99",
-        image: "media/home/need_for_speed_heat.jpeg",
-        onSale: true,
-        platform: "Steam",
-        system: "Windows",
-        gallery: ["media/others/need_for_speed_1.png", "media/others/need_for_speed_2.png", "media/others/need_for_speed_3.png"]
-    },
-    {
-        title: "Euro Truck Simulator",
-        price: "R$ 15,99",
-        image: "media/home/euro_truck_simulator.jpg",
-        onSale: true,
-        platform: "Steam",
-        system: "Windows",
-        gallery: ["media/others/euro_truck_simulator_2_1.png", "media/others/euro_truck_simulator_2_2.png", "media/others/euro_truck_simulator_2_3.png"]
-    },
-    {
-        title: "GTA VI",
-        price: "Em Breve!",
-        image: "media/home/gta_vi.jpg",
-        platform: "Steam e Rockstar",
-        system: "Windows",
-        gallery: ["media/others/gta_vi_1.png", "media/others/gta_vi_2.png", "media/others/gta_vi_3.png"]
-    },
-    {
-        title: "Batman Arkham Knight",
-        price: "R$ 26,99",
-        image: "media/home/batman_arkham_knight.jpg",
-        onSale: true,
-        platform: "Steam",
-        system: "Windows",
-        gallery: ["media/others/batman_arkham_knight_1.png", "media/others/batman_arkham_knight_2.png", "media/others/batman_arkham_knight_3.png"]
-    },
-    {
-        title: "Assetto Corsa",
-        price: "R$ 59,99",
-        image: "media/home/assetto_corsa.jpg",
-        platform: "Steam",
-        system: "Windows",
-        gallery: ["media/others/assetto_corsa_1.png", "media/others/assetto_corsa_2.png", "media/others/assetto_corsa_3.png"]
-    },
-    {
-        title: "GTA V",
-        price: "R$ 74,99",
-        image: "media/home/gta_v.jpg",
-        onSale: true,
-        platform: "Steam",
-        system: "Windows",
-        gallery: ["media/others/gta_v_1.png", "media/others/gta_v_2.png", "media/others/gta_v_3.png"]
-    }
-];
-
 let currentSlide = 0;
+let bannerInterval;
 
 function changeSlide(direction) {
     const slides = document.querySelectorAll('.slide');
+    if (!slides.length) return;
 
     slides[currentSlide].classList.remove('active');
-
     currentSlide += direction;
 
     if (currentSlide >= slides.length) {
@@ -103,7 +17,10 @@ function changeSlide(direction) {
     slides[currentSlide].classList.add('active');
 }
 
-setInterval(() => changeSlide(1), 5000);
+function startBannerInterval() {
+    clearInterval(bannerInterval);
+    bannerInterval = setInterval(() => changeSlide(1), 5000);
+}
 
 function toggleMenu() {
     const sidebar = document.getElementById('sidebar');
@@ -115,83 +32,109 @@ function toggleMenu() {
     }
 }
 
-let productImgIndex = 0;
+// ==========================================
+// INTEGRAÇÃO COM BANCO DE DADOS (API)
+// ==========================================
 
-function selectImg(src, index) {
-    const mainImg = document.getElementById('current-img');
-    if (mainImg) {
-        mainImg.src = src;
-        productImgIndex = index;
+const API_URL = 'http://localhost:3000/api';
 
-        const thumbs = document.querySelectorAll('.thumb');
-        thumbs.forEach(t => t.classList.remove('active'));
-        if (thumbs[index]) thumbs[index].classList.add('active');
+async function fetchGames() {
+    try {
+        const response = await fetch(`${API_URL}/jogos`);
+        if (!response.ok) throw new Error('Falha ao buscar os jogos do servidor.');
+
+        const jogos = await response.json();
+        
+        renderBanner(jogos);
+        renderGames(jogos);
+    } catch (error) {
+        console.error('Erro:', error);
+        document.getElementById('games-container').innerHTML = '<p style="color: white; text-align: center;">Erro ao carregar o catálogo de jogos.</p>';
     }
 }
 
-function moveGallery(step) {
-    const gameData = JSON.parse(localStorage.getItem('selectedGame'));
+function renderBanner(jogos) {
+    const bannerSlider = document.getElementById('banner-slider');
+    
+    // Remove os elementos de slide antigos caso existam, preservando os botões de navegação
+    const existingSlides = bannerSlider.querySelectorAll('.slide');
+    existingSlides.forEach(slide => slide.remove());
 
-    if (gameData && gameData.gallery) {
-        productImgIndex += step;
+    // Seleciona até 3 jogos que possuem imagem de capa para compor o banner rotativo
+    const jogosBanner = jogos.filter(j => j.cover).slice(0, 3);
 
-        if (productImgIndex >= gameData.gallery.length) productImgIndex = 0;
-        if (productImgIndex < 0) productImgIndex = gameData.gallery.length - 1;
-
-        selectImg(gameData.gallery[productImgIndex], productImgIndex);
+    if (jogosBanner.length === 0) {
+        // Slide padrão de segurança caso a tabela JOGOS esteja vazia
+        const placeholderSlide = document.createElement('div');
+        placeholderSlide.className = 'slide active';
+        placeholderSlide.innerHTML = `<img src="../src/templates/assets/cover/site_logo.png" alt="Nenhum jogo disponível">`;
+        bannerSlider.insertBefore(placeholderSlide, bannerSlider.querySelector('.prev'));
+        return;
     }
+
+    jogosBanner.forEach((game, index) => {
+        const slideDiv = document.createElement('div');
+        slideDiv.className = index === 0 ? 'slide active' : 'slide';
+        slideDiv.style.cursor = 'pointer';
+        
+        // Redireciona o usuário para a página de detalhes correspondente ao clicar no banner
+        slideDiv.onclick = () => {
+            window.location.href = `jogo.html?id=${game.id}`;
+        };
+
+        slideDiv.innerHTML = `<img src="${game.cover}" alt="${game.titulo}">`;
+        
+        // Insere o slide antes do botão de navegação anterior ('prev')
+        bannerSlider.insertBefore(slideDiv, bannerSlider.querySelector('.prev'));
+    });
+
+    currentSlide = 0;
+    startBannerInterval();
 }
 
-function loadGames() {
+function formatPrice(value) {
+    return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
+}
+
+function renderGames(jogos) {
     const container = document.getElementById('games-container');
+    container.innerHTML = '';
 
-    games.forEach(game => {
+    jogos.forEach(game => {
         const card = document.createElement('div');
         card.className = 'game-card';
         card.style.cursor = "pointer";
 
         card.onclick = () => {
-            localStorage.setItem('selectedGame', JSON.stringify(game));
-            window.location.href = "jogo.html";
+            window.location.href = `jogo.html?id=${game.id}`;
         };
 
-        const promoHTML = game.onSale ? `<span class="promo-badge">Promoção</span>` : '';
+        const temDesconto = game.desconto && parseFloat(game.desconto) > 0;
+        const promoHTML = temDesconto ? `<span class="promo-badge">-${parseFloat(game.desconto)}%</span>` : '';
+        const imgSrc = game.cover ? game.cover : 'media/home/placeholder.jpg';
+
+        let precoFinal = parseFloat(game.preco);
+        let precoHTML = `<p class="price">${formatPrice(precoFinal)}</p>`;
+
+        if (temDesconto) {
+            const valorDesconto = precoFinal * (parseFloat(game.desconto) / 100);
+            precoFinal -= valorDesconto;
+            precoHTML = `
+                <span style="text-decoration: line-through; font-size: 0.8em; color: #aaa;">${formatPrice(game.preco)}</span>
+                <p class="price">${formatPrice(precoFinal)}</p>
+            `;
+        }
+
         card.innerHTML = `
             ${promoHTML}
-            <img src="${game.image}" alt="${game.title}">
-            <h3>${game.title}</h3>
-            <p class="price"> ${game.price}</p>
+            <img src="${imgSrc}" alt="${game.titulo}" style="width: 100%; border-radius: 8px;">
+            <h3>${game.titulo}</h3>
+            ${precoHTML}
         `;
         container.appendChild(card);
     });
 }
 
-function loadProductDetails() {
-    const gameData = JSON.parse(localStorage.getItem('selectedGame'));
-
-    if (gameData) {
-        document.querySelector('.game-title').innerText = gameData.title;
-        document.querySelector('.price-section .value').innerText = gameData.price;
-        document.getElementById('current-img').src = gameData.image;
-        document.querySelector('.info-text strong').innerText = gameData.platform;
-
-        const thumbContainer = document.querySelector('.thumb-list');
-        thumbContainer.innerHTML = "";
-
-        if (gameData.gallery && gameData.gallery.length > 0) {
-            gameData.gallery.forEach((imgSrc, index) => {
-                const img = document.createElement('img');
-                img.src = imgSrc;
-                img.className = index === 0 ? "thumb active" : "thumb";
-                img.onclick = () => selectImg(imgSrc, index);
-                thumbContainer.appendChild(img);
-            });
-        }
-    }
-}
-
-if (window.location.pathname.includes("jogo.html")) {
-    window.onload = loadProductDetails;
-} else {
-    window.onload = loadGames;
+if (!window.location.pathname.includes("jogo.html")) {
+    window.onload = fetchGames;
 }

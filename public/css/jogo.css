@@ -1,110 +1,155 @@
-/* Paginas dos Jogos*/
+/* ==========================================
+   PÁGINA DO JOGO (DETALHES E COMPRA)
+   ========================================== */
 
-/* Layout da Página de Produto */
-/* Container Principal - centraliza e alinha */
+/* Container Principal */
 .product-page {
     max-width: 1200px;
-    margin: 30px auto;
+    margin: 100px auto 40px; /* 100px para evitar sobreposição com a navbar do homepage.css */
     padding: 0 20px;
+    font-family: 'Inter', sans-serif;
+    color: #ffffff;
 }
 
-/* Título */
 .game-title {
-    font-size: 1.8rem;
-    margin-bottom: 30px;
-    color: white;
+    font-size: 2.2rem;
+    margin-bottom: 25px;
+    font-weight: 700;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 10px;
 }
 
-/* Container de duas colunas (Galeria / Card) */
+/* Grid de Duas Colunas (Galeria e Card de Compra) */
 .game-details-container {
-    display: flex;
-    gap: 30px; /* Espaço entre as colunas */
-    align-items: flex-start; /* Alinha no topo */
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 40px;
+    align-items: start;
 }
 
-/* --- Galeria (Nova Estilização) --- */
+/* ==========================================
+   GALERIA DE IMAGENS
+   ========================================== */
 .game-gallery {
-    flex: 6; /* Ocupa 5/6 da largura */
+    width: 100%;
 }
 
 .main-view {
     position: relative;
-    border-radius: 20px;
+    border-radius: 12px;
     overflow: hidden;
     background: #000;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
 }
 
 .main-view img {
     width: 100%;
-    height: 480px; /* Altura da imagem principal */
+    height: 500px;
     object-fit: cover;
     display: block;
+    transition: opacity 0.3s ease;
 }
 
+/* Setas de Navegação na Imagem Principal */
+.nav-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    border: none;
+    font-size: 24px;
+    padding: 15px;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: background 0.3s ease;
+    z-index: 10;
+}
+
+.nav-arrow:hover { background: var(--accent-blue, #2a2aef); }
+.prev-img { left: 15px; }
+.next-img { right: 15px; }
+
+/* Lista de Miniaturas */
 .thumb-list {
     display: flex;
     gap: 15px;
-    margin-top: 15px;
+    margin-top: 20px;
+    overflow-x: auto;
+    padding-bottom: 5px; /* Espaço para scroll se houver muitas */
 }
+
+.thumb-list::-webkit-scrollbar { height: 6px; }
+.thumb-list::-webkit-scrollbar-thumb { background: #444; border-radius: 10px; }
 
 .thumb {
-    width: 32%;
-    height: 140px;
+    width: 150px;
+    height: 85px;
     object-fit: cover;
-    border-radius: 12px;
+    border-radius: 8px;
     cursor: pointer;
-    opacity: 0.6;
-    transition: 0.3s;
+    opacity: 0.5;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
 }
 
-.thumb.active, .thumb:hover {
+.thumb:hover { opacity: 0.8; }
+.thumb.active {
     opacity: 1;
-    box-shadow: 0 0 10px rgba(32, 36, 255, 0.7);
+    border-color: var(--accent-blue, #2a2aef);
+    box-shadow: 0 0 10px rgba(42, 42, 239, 0.5);
 }
 
-/* --- O CARD AZUL DE COMPRA (Estilo image_9c4c2a.jpg) --- */
+/* ==========================================
+   CARD DE COMPRA (LATERAL DIREITA)
+   ========================================== */
 .purchase-card {
-    flex: 2; /* Ocupa 2/3 da largura */
-    background-color: #0000bb; /* Azul vibrante do card */
-    border-radius: 25px; /* Bordas bem arredondadas */
+    background-color: #1a1a2e; /* Mantendo o padrão de caixas secundárias */
     padding: 30px;
-    text-align: center;
-    position: sticky; /* O card segue a rolagem */
-    top: 20px;
+    border-radius: 12px;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+    border: 1px solid #333355;
+    position: sticky;
+    top: 100px; /* Acompanha a rolagem */
 }
 
-/* Seção de Preço */
 .price-section {
-    font-size: 40px;
-    font-weight: bold;
     margin-bottom: 25px;
-    display: flex;
-    align-items: baseline;
-    justify-content: center;
 }
 
-.currency { font-size: 40px; margin-right: 5px; }
+.price-section .value {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #00ff88; /* Verde destaque para dinheiro */
+    display: block;
+}
 
-/* Info Plataforma */
 .platform-info-card {
     display: flex;
     align-items: center;
     gap: 15px;
-    justify-content: center;
-    margin-bottom: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
 }
 
-.platform-info-card i { font-size: 2.2rem; }
-.info-text strong { font-size: 1.1rem; }
+.platform-info-card i {
+    font-size: 2rem;
+    color: #a5b1c2;
+}
 
-/* Texto Ativação */
+.info-text strong { font-size: 1.1rem; color: #fff; }
+.info-text span { font-size: 0.9rem; color: #a5b1c2; }
+
 .activation-msg {
     font-size: 0.9rem;
-    margin-bottom: 30px;
-    opacity: 0.8;
+    color: #a5b1c2;
+    margin-bottom: 25px;
+    text-align: center;
 }
 
-/* Botões de Ação (Nova Estilização) */
+/* Botões de Ação */
 .buy-wishlist-buttons {
     display: flex;
     flex-direction: column;
@@ -112,87 +157,39 @@
 }
 
 .btn-purchase-green {
-    background-color: #00c853; /* Verde do botão Comprar */
-    color: black;
-    width: 100%;
-    padding: 18px;
-    border-radius: 15px;
+    background-color: #00ff88;
+    color: #111;
     border: none;
-    font-weight: bold;
+    padding: 15px;
+    border-radius: 8px;
     font-size: 1.2rem;
+    font-weight: bold;
     cursor: pointer;
-    transition: 0.3s;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
 }
+
+.btn-purchase-green:hover { background-color: #33ff99; transform: scale(1.02); }
 
 .btn-wishlist-grey {
-    background-color: #e0e0e0; /* Cinza do botão Desejo */
-    color: #333;
-    width: 100%;
-    padding: 15px;
-    border-radius: 15px;
+    background-color: #444466;
+    color: #fff;
     border: none;
+    padding: 15px;
+    border-radius: 8px;
+    font-size: 1rem;
     font-weight: bold;
     cursor: pointer;
+    transition: all 0.3s ease;
 }
 
-.btn-purchase-green:hover { filter: brightness(1.2); }
+.btn-wishlist-grey:hover { background-color: #555577; }
 
-/* Container da imagem principal (para o posicionamento absoluto funcionar) */
-.main-view {
-    position: relative;
-    border-radius: 20px;
-    overflow: hidden;
-    background: #000;
-}
-
-/* Estilo UNIVERSAL das novas Setas sobre a Imagem */
-.nav-arrow {
-    position: absolute;
-    top: 50%; /* Alinha no meio verticalmente */
-    transform: translateY(-50%); /* Ajuste fino para centralizar */
-    
-    background-color: rgba(0, 0, 0, 0.6); /* Fundo preto semi-transparente */
-    color: #ffffff; /* Seta branca */
-    
-    border: none;
-    font-size: 30px; /* Seta grande */
-    padding: 15px 20px;
-    cursor: pointer;
-    z-index: 10; /* Fica na frente da imagem */
-    transition: 0.3s ease;
-    border-radius: 50%; /* Formato circular igual ao exemplo */
-}
-
-/* Posicionamento Específico */
-.prev-img {
-    left: 20px; /* Afastado da borda esquerda */
-}
-
-.next-img {
-    right: 20px; /* Afastado da borda direita */
-}
-
-/* Efeito Hover (passar o mouse) */
-.nav-arrow:hover {
-    background-color: var(--accent-blue); /* Muda para o azul da loja */
-    transform: translateY(-50%) scale(1.1); /* Aumenta levemente */
-}
-
-/* Ajuste para o link do logo não quebrar o layout */
-.logo-link {
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-    gap: 5px; /* Ajuste o espaço entre o ícone e o nome se necessário */
-}
-
-.logo-link img {
-    cursor: pointer;
-}
-
-/* Estilo do Modal do Carrinho */
+/* ==========================================
+   MODAL DO CARRINHO
+   ========================================== */
 .modal-cart {
-    display: none; /* Escondido por padrão */
+    display: none;
     position: fixed;
     z-index: 3000;
     left: 0;
@@ -200,56 +197,103 @@
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(3px);
 }
 
 .modal-content {
     background-color: #050533;
-    margin: 10% auto;
-    padding: 25px;
-    border: 2px solid #2024ff;
-    border-radius: 20px;
-    width: 400px;
+    margin: 8% auto;
+    padding: 30px;
+    border: 1px solid var(--accent-blue, #2a2aef);
+    border-radius: 15px;
+    width: 90%;
+    max-width: 500px;
     color: white;
     position: relative;
-    box-shadow: 0 0 20px rgba(32, 36, 255, 0.5);
+    box-shadow: 0 0 25px rgba(32, 36, 255, 0.3);
+    animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+    from { transform: translateY(-50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
 }
 
 .close-modal {
     position: absolute;
-    right: 20px;
-    top: 10px;
-    font-size: 28px;
+    right: 25px;
+    top: 20px;
+    font-size: 30px;
+    font-weight: bold;
+    color: #a5b1c2;
     cursor: pointer;
+    transition: color 0.3s;
 }
 
-.cart-item {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    margin-bottom: 15px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
-}
+.close-modal:hover { color: #ff4757; }
 
-.cart-item img {
-    width: 60px;
-    height: 60px;
-    border-radius: 8px;
-    object-fit: cover;
+.modal-content h2 {
+    margin-bottom: 25px;
+    border-bottom: 1px solid #333355;
+    padding-bottom: 15px;
 }
 
 .cart-footer {
-    margin-top: 20px;
-    text-align: center;
+    margin-top: 25px;
+    border-top: 1px solid #333355;
+    padding-top: 20px;
 }
 
+.cart-total {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.cart-total span { color: #00ff88; }
+
 .btn-checkout {
-    background-color: #00c853;
-    color: black;
+    background-color: var(--accent-blue, #2a2aef);
+    color: white;
     border: none;
-    padding: 12px 25px;
-    border-radius: 10px;
+    padding: 15px;
+    border-radius: 8px;
+    width: 100%;
+    font-size: 1.1rem;
     font-weight: bold;
     cursor: pointer;
-    width: 100%;
+    transition: background-color 0.3s ease;
+}
+
+.btn-checkout:hover {
+    background-color: var(--hover-blue, #2024ff);
+}
+
+/* ==========================================
+   RESPONSIVIDADE
+   ========================================== */
+@media (max-width: 900px) {
+    .game-details-container {
+        grid-template-columns: 1fr; /* Muda para uma coluna em telas menores */
+    }
+    
+    .purchase-card {
+        position: static;
+    }
+
+    .main-view img {
+        height: 350px;
+    }
+}
+
+@media (max-width: 600px) {
+    .main-view img {
+        height: 250px;
+    }
+    .thumb {
+        width: 100px;
+        height: 60px;
+    }
 }

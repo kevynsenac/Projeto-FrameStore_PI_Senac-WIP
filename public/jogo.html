@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FrameStore</title>
+    <title>FrameStore | Detalhes do Jogo</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="css/homepage.css">
     <link rel="stylesheet" href="css/jogo.css">
@@ -16,9 +16,9 @@
                 <span></span><span></span><span></span>
             </div>            
             
-            <a href="index.html" class="logo-link">
-                <img src="media/home/site_logo.png" alt="Logo" class="logo-unico">
-                <img src="media/home/site_nome.png" alt="Logo" class="logo-nome">
+            <a href="homepage.html" class="logo-link">
+                <img src="/src/templates/assets/cover/site_logo.png" alt="Logo Unico" class="logo-unico">
+                <img src="/src/templates/assets/cover/site_nome.png" alt="Logo Nome" class="logo-nome">
             </a>
         </div>
         <div class="search-bar">
@@ -45,7 +45,7 @@
     <div id="overlay" class="overlay" onclick="toggleMenu()"></div>
 
     <main class="product-page">
-        <h1 class="game-title"></h1>
+        <h1 class="game-title">Carregando...</h1>
 
         <div class="game-details-container">
             
@@ -60,14 +60,12 @@
 
             <aside class="purchase-card">
                 <div class="price-section">
-                    <span class="currency"></span>
-                    <span class="value"></span>
-                </div>
+                    </div>
                 
                 <div class="platform-info-card">
                     <i class="fab fa-steam"></i>
                     <div class="info-text">
-                        <strong>Steam</strong>
+                        <strong id="game-platform">Steam</strong>
                         <br>
                         <span>Windows</span>
                     </div>
