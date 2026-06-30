@@ -1,4 +1,7 @@
-const API_URL = "http://localhost:3000/api";
+// Substitua o hardcode por isso:
+const API_URL = window.location.hostname === 'localhost' 
+    ? 'http://localhost:3000/api' 
+    : '/api';
 function showTab(tabName) {
   const loginForm = document.getElementById("form-login");
   const registerForm = document.getElementById("form-register");
